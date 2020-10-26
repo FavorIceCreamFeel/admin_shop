@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    username: root
+    password: liu150938
+    url: jdbc:mysql://localhost:3306/webapp?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      auto-commit: true
+      connection-timeout: 3000
+      max-lifetime: 1800000
+      idle-timeout: 900000
+      minimum-idle: 20
+      maximum-pool-size: 200
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
