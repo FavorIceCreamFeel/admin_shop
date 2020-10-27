@@ -79,19 +79,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/fileUpload").hasAuthority("Role4")
                 .antMatchers("/shoppingTrolley/**").hasAuthority("Role5")
                 .and()
-//                .formLogin().loginPage("/zero/login").successForwardUrl("/zero/index").failureForwardUrl("/zero/reLogin")
 //                登陆成功和登陆失败接口实现
-                .formLogin().loginPage("/zero/login").successHandler(myAuthenticationSuccessHandler).failureHandler(myAuthenticationFailHandler)
+                .formLogin().loginPage("/vue/signIn").successHandler(myAuthenticationSuccessHandler).failureHandler(myAuthenticationFailHandler)
                 .and()
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/zero/login").invalidateHttpSession(true).deleteCookies("JESSIONID")
-//                .logout().logoutUrl("/logout").logoutSuccessUrl("/zero/login").invalidateHttpSession(true).deleteCookies("JESSIONID")
-                .and()
-//                记住用户，不过好像没啥用了
-                .rememberMe().rememberMeParameter("remember")
+                .logout().logoutUrl("/logout")
                 .and()
 //                处理异常和权限不足的接口实现
                 .exceptionHandling().accessDeniedHandler(myAccessDeniedHandler).authenticationEntryPoint(myAuthenticationException)
-//                .exceptionHandling().accessDeniedPage("/zero/err")
                 .and()
 //                开启跨域请求
                 .csrf().disable().cors();
@@ -99,10 +93,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http
 //                session管理，由于前后端分离，不启用
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//                .sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry).expiredUrl("/zero/login")
-//                .and()
-//                .invalidSessionUrl("/zero/index");//session失效后跳转
-//                .maximumSessions(1).maxSessionsPreventsLogin(true);
 
     }
 

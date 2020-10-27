@@ -17,13 +17,19 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
+/*        registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedMethods("*")
                 .allowedHeaders("*")
 //                .allowCredentials(true)
 //                .exposedHeaders("*")
+                .maxAge(3600);*/
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowCredentials(true)
+                .allowedMethods("GET", "POST", "DELETE", "PUT")
                 .maxAge(3600);
+
     }
     /**
      * 处理ndlers(ResourceHandlerRegistry registry)
