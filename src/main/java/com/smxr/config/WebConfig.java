@@ -17,17 +17,17 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-/*        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("*")
-                .allowedHeaders("*")
-//                .allowCredentials(true)
+/*        registry.addMapping("/**")    // 允许跨域访问的路径
+                .allowedOrigins("*")    // 允许跨域访问的源
+                .allowedMethods("*")  // 允许请求方法
+                .allowedHeaders("*")  // 允许头部设置
+//                .allowCredentials(true) // 是否发送cookie
 //                .exposedHeaders("*")
-                .maxAge(3600);*/
+                .maxAge(3600);*/      // 预检间隔时间
         registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowCredentials(true)
-                .allowedMethods("GET", "POST", "DELETE", "PUT")
+                .allowedMethods("GET", "POST", "DELETE", "PUT","OPTIONS")  // 允许请求方法
                 .maxAge(3600);
 
     }
