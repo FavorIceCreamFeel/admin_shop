@@ -88,7 +88,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().accessDeniedHandler(myAccessDeniedHandler).authenticationEntryPoint(myAuthenticationException)
                 .and()
 //                开启跨域请求
+            // 禁用 csrf, 由于使用的是JWT，我们这里不需要csrf
                 .csrf().disable().cors();
+//              .cors().and().csrf().disable()
 
         http
 //                session管理，由于前后端分离，不启用
