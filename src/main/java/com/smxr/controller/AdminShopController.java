@@ -17,7 +17,7 @@ import java.util.Base64;
  * @time 16:32
  */
 @RestController
-@RequestMapping("")
+@RequestMapping("/vue")
 public class AdminShopController {
 
     @RequestMapping("/info")

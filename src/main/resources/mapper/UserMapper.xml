@@ -3,8 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mybatis.demomybatis.dao.UserMapper">
-    <resultMap id="userResultMap" type="com.mybatis.demomybatis.pojo.User">
+<mapper namespace="com.smxr.dao.UserMapper">
+    <resultMap id="userResultMap" type="com.smxr.pojo.User">
         <id column="phoneNumber" property="phoneNumber"/>
         <result column="userName" property="userName"/>
         <result column="userPwd" property="userPwd"/>
@@ -14,11 +14,11 @@
         <result column="createTime" property="createTime"/>
     </resultMap>
 
-    <select id="selectUserById" parameterType="String"  resultType="com.mybatis.demomybatis.pojo.User">
+    <select id="selectUserById" parameterType="String"  resultType="com.smxr.pojo.User">
         select * from user where phoneNumber=#{phoneNumber}
     </select>
     <!-- 返回List<User> 集合   -->
-    <select id="selectUserAll" resultType="com.mybatis.demomybatis.pojo.User">
+    <select id="selectUserAll" resultType="com.smxr.pojo.User">
         select * from user
     </select>
     <!-- 返回Map<string,User> 集合  -->
@@ -31,7 +31,7 @@
     </select>
     <!-- 动态SQL -->
     <!-- if+where   -->
-    <select id="selectUserByNameOrPhoneNumber" parameterType="com.mybatis.demomybatis.pojo.User" resultType="com.mybatis.demomybatis.pojo.User">
+    <select id="selectUserByNameOrPhoneNumber" parameterType="com.smxr.pojo.User" resultType="com.smxr.pojo.User">
         select *from user
         <where>
             <if test="userName != null and userName !='' ">
@@ -43,7 +43,7 @@
         </where>
     </select>
     <!--  if+set   -->
-    <update id="updateUser" parameterType="com.mybatis.demomybatis.pojo.User">
+    <update id="updateUser" parameterType="com.smxr.pojo.User">
         update user
         <set>
             <if test="userName != null and userName != ''">userName = #{userName},</if>
@@ -54,7 +54,7 @@
         where phoneNumber =#{phoneNumber}
     </update>
     <!-- if+choose   -->
-    <select id="selectUserByChoose" parameterType="com.mybatis.demomybatis.pojo.User" resultType="com.mybatis.demomybatis.pojo.User">
+    <select id="selectUserByChoose" parameterType="com.smxr.pojo.User" resultType="com.smxr.pojo.User">
         select *from user
         <where>
             <choose>
@@ -70,7 +70,7 @@
     </select>
     <!-- trim 改写 if+where , if+set-->
     <!--prefix 前缀 ;  prefixoverride 去掉第一个and或or ;-->
-    <select id="selectUserByNameOrPhoneNumberTrim" parameterType="com.mybatis.demomybatis.pojo.User" resultType="com.mybatis.demomybatis.pojo.User">
+    <select id="selectUserByNameOrPhoneNumberTrim" parameterType="com.smxr.pojo.User" resultType="com.smxr.pojo.User">
         select *from user
         <trim prefix="where" prefixOverrides="and | or">
             <if test="userName != null and userName !='' ">
@@ -83,7 +83,7 @@
     </select>
     <!-- trim 改写 if+where , if+set-->
     <!--prefix 前缀 ;  suffixOverrides 去掉最后一个 , 号 ;-->
-    <update id="updateUserTrim" parameterType="com.mybatis.demomybatis.pojo.User">
+    <update id="updateUserTrim" parameterType="com.smxr.pojo.User">
         update user
         <trim prefix="set" suffixOverrides=",">
             <if test="userName != null and userName != ''">userName = #{userName},</if>
@@ -105,7 +105,7 @@
     <!--引用sql片段-->
     <!-- 引用 sql 片段，如果refid 指定的不在本文件中，那么需要在前面加上 namespace -->
     <!-- 在这里还可以引用其他的 sql 片段 -->
-    <select id="selectUserByNameOrPhoneNumberTrimSQL" parameterType="com.mybatis.demomybatis.pojo.User" resultType="com.mybatis.demomybatis.pojo.User">
+    <select id="selectUserByNameOrPhoneNumberTrimSQL" parameterType="com.smxr.pojo.User" resultType="com.smxr.pojo.User">
         select *from user
         <trim prefix="where" prefixOverrides="and | or">
             <include refid="selectUserByUserNameAndPhoneNumber"></include>
@@ -120,7 +120,7 @@ open ：前缀
 close ：后缀
 separator ：分隔符，表示迭代时每个元素之间以什么分隔
   			  -->
-    <select id="selectUserByIds" parameterType="list" resultType="com.mybatis.demomybatis.pojo.User">
+    <select id="selectUserByIds" parameterType="list" resultType="com.smxr.pojo.User">
         select *from user
         <where>
             <foreach collection="list" item="phoneNumber" open="(" close=")"

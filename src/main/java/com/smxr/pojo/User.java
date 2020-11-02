@@ -1,11 +1,13 @@
 package com.smxr.pojo;
 
+import java.io.Serializable;
+
 /**
  * @author smxr
  * @date 2020/10/26
  * @time 15:59
  */
-public class User {
+public class User implements Serializable {
     private String userName;
     private String userPwd;
     private String userSex;

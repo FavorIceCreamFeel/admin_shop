@@ -15,6 +15,7 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import java.security.SecureRandom;
@@ -38,8 +39,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private MyAuthenticationFailHandler myAuthenticationFailHandler;
     @Autowired
     private MyJwtTokenFilter myJwtTokenFilter;
-    @Autowired
-    private SessionRegistry sessionRegistry;
     @Autowired
     private UserService userServer;
 
@@ -91,11 +90,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             // 禁用 csrf, 由于使用的是JWT，我们这里不需要csrf
                 .csrf().disable().cors();
 //              .cors().and().csrf().disable()
-
         http
 //                session管理，由于前后端分离，不启用
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
+        http.addFilterBefore(myJwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 

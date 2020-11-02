@@ -1,9 +1,8 @@
 package com.smxr.utils.jwtUtils;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -19,7 +18,7 @@ import java.util.Map;
  * JWT配置工具类
  */
 public class JwtConfigUtils {
-       /*
+    /*
     iss: 该JWT的签发者
     sub: 该JWT所面向的用户
     aud: 接收该JWT的一方
@@ -99,9 +98,8 @@ public class JwtConfigUtils {
     // Sample method to validate and read the JWT
     public static Claims parseJWT(String jwt) {
         // This line will throw an exception if it is not a signed JWS (as expected)
-        Claims claims=null;
         try {
-             claims = Jwts.parser()
+            Claims claims = Jwts.parser()
                     .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET))
                     .parseClaimsJws(jwt).getBody();
             return claims;
@@ -113,6 +111,7 @@ public class JwtConfigUtils {
     /**
      * 验证jwt的有效期
      * @param claims
+     * @return
      */
     public static Boolean isTokenExpired(Claims claims) {
         final Date expiration =  claims.getExpiration();
