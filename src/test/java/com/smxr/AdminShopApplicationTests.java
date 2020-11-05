@@ -160,4 +160,34 @@ class AdminShopApplicationTests {
 //        stringRedisTemplate.opsForSet().randomMembers(); //随机获取集合中count个元素
         stringRedisTemplate.opsForSet().randomMember("redisSet");  //随机获取redisSet无序集合中的一个元素
     }
+    @Test
+    void contextLoadsRedis_zset(){
+        stringRedisTemplate.opsForZSet().add("redisZSet","hello!",1); //新增一个有序集合，存在的话为false，不存在的话为true
+//        通过分数返回有序集合指定区间内的成员个数
+        stringRedisTemplate.opsForZSet().count("redisZSet",0,5);
+        stringRedisTemplate.opsForZSet().getOperations();
+        stringRedisTemplate.opsForZSet().incrementScore("redisZSet","hello!",3);  //增加元素的score值，并返回增加后的值 +值
+//        stringRedisTemplate.opsForZSet().intersectAndStore();
+//        通过索引区间返回有序集合成指定区间内的成员，其中有序集成员按分数值递增(从小到大)顺序排列
+        stringRedisTemplate.opsForZSet().range("redisZSet",0,-1);// 查看集合所有元素
+//        stringRedisTemplate.opsForZSet().rangeByLex();
+//        通过分数返回有序集合指定区间内的成员，其中有序集成员按分数值递增(从小到大)顺序排列
+        stringRedisTemplate.opsForZSet().rangeByScore("redisZSet",0,5);
+//        通过分数返回有序集合指定区间内的成员对象，其中有序集成员按分数值递增(从小到大)顺序排列
+        stringRedisTemplate.opsForZSet().rangeByScoreWithScores("redisZSet",0,5);
+//        通过索引区间返回有序集合成指定区间内的成员对象，其中有序集成员按分数值递增(从小到大)顺序排列
+        stringRedisTemplate.opsForZSet().rangeWithScores("redisZSet",0,-1);
+//        返回有序集中指定成员的排名，其中有序集成员按分数值递增(从小到大)顺序排列  首位为0
+        stringRedisTemplate.opsForZSet().rank("redisZSet","hello!");
+//        返回有序集中指定成员的排名，其中有序集成员按分数值递减(从大到小)顺序排列
+        stringRedisTemplate.opsForZSet().reverseRank("redisZSet","hello!");
+        stringRedisTemplate.opsForZSet().remove("redisZSet","hello!");//从有序集合中移除一个或者多个元素
+//        遍历zset 获取迭代器
+        stringRedisTemplate.opsForZSet().scan("redisZSet", ScanOptions.scanOptions().build());
+        stringRedisTemplate.opsForZSet().score("redisZSet","hello!");  //获取指定成员的score值
+        stringRedisTemplate.opsForZSet().size("redisZSet");//获取成员数量 内部调用zCard()
+//        计算给定的一个有序集的并集，并存储在新的 destKey中，key相同的话会把score值相加
+//        stringRedisTemplate.opsForZSet().unionAndStore();
+        stringRedisTemplate.opsForZSet().zCard("redisZSet");//获取有序集合的成员数
+    }
 }
