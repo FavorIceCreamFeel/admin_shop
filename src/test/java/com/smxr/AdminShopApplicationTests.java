@@ -1,5 +1,6 @@
 package com.smxr;
 
+import com.google.common.primitives.Ints;
 import com.smxr.pojo.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.connection.RedisConnectionCommands;
 import org.springframework.data.redis.core.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
@@ -92,6 +90,7 @@ class AdminShopApplicationTests {
         arrayList.add("adree");
         stringRedisTemplate.opsForHash().multiGet("redisHash",arrayList);  //得到多个属性值，参数是集合
         stringRedisTemplate.opsForHash().delete("redisHash","sex");//删除指定hash对象的 属性值
+        //匹配获取键值对，ScanOptions.NONE为获取全部键对，ScanOptions.scanOptions().match("hash-key2").build()匹配获取键位map1的键值对,不能模糊匹配
         Cursor<Map.Entry<Object, Object>> redisHash = stringRedisTemplate.opsForHash().scan("redisHash", ScanOptions.scanOptions().build());
         //相当于得到迭代器
         while (redisHash.hasNext()){
@@ -189,5 +188,128 @@ class AdminShopApplicationTests {
 //        计算给定的一个有序集的并集，并存储在新的 destKey中，key相同的话会把score值相加
 //        stringRedisTemplate.opsForZSet().unionAndStore();
         stringRedisTemplate.opsForZSet().zCard("redisZSet");//获取有序集合的成员数
+    }
+
+
+    @Test
+    void test0310(){
+        HashMap<String, String> stringStringHashMap = new HashMap<>();
+        int size = stringStringHashMap.size();
+//        System.out.println(  "  长度：  "+size);
+
+        String string="01 06 02 42 03 00 02 F1 41 02 06 02 42 03 00 01 D6 26 04 06 02 42 83 00 00 87 58 ";
+        StringBuffer stringBuffer = new StringBuffer(string);
+        int i1 =stringBuffer.length()/27;
+        for (int i = 0; i <i1; i++) {
+            String substring;
+            if (i==i1-1){
+                substring=stringBuffer.toString();
+            }else {
+                substring = stringBuffer.substring(0, 27);
+            }
+            System.out.println("第" +
+                    i +
+                    "次截取为 "+substring);
+            //01地址位 06功能码 02寄存器 42状态字节 03分度值/正负号 00 02 F1 分度数 41校验
+            // 重量=分度数*分度值
+            switch (substring.charAt(1)){
+                case '1':
+                    double kg = get_KG(substring);
+                    System.out.println(" lzy --> 1 组"+kg);
+                    break;
+                case '2':
+//                    get_KG(substring);
+                    System.out.println(" lzy --> 2 组"+ get_KG(substring));
+                    break;
+                case '3':
+//                    get_KG(substring);
+                    System.out.println(" lzy --> 3 组"+ get_KG(substring));
+                    break;
+                case '4':
+//                    get_KG(substring);
+                    System.out.println(" lzy --> 4 组"+ get_KG(substring));
+                    break;
+                case '5':
+//                    get_KG(substring);
+                    System.out.println(" lzy --> 5 组"+ get_KG(substring));
+            }
+            if (i!=i1-1){
+                stringBuffer = stringBuffer.delete(0, 27);
+            }
+            System.out.println("第" +
+                    i +
+                    "次截取之后是："+stringBuffer.toString());
+
+        }
+
+
+    }
+    public static double get_KG(String str){
+        //02 06 02
+        // C2  状态
+        // 03  正负 0000 0011    1000 0000 -> 128 dec/80 hex
+        // 00 02 E0  = 10进制 => 00*02*224*0.0001  ==> 2E0hex*0.0001->736dec*0.001==
+        // B1
+        //02 06 02 C2 03 00 02 E0 B1
+//        if (C2) 设备状态暂时不判断
+        double v;
+        if (Integer.parseInt(str.substring(12,14),16)<128){
+            //正
+            System.out.println("输出 正");
+            v= crossWalks(str.charAt(13));
+
+        }else {
+            System.out.println("输出 负");
+            //负
+            v = -crossWalks(str.charAt(13));
+        }
+        double dd= Integer.parseInt(str.substring(15,23).replace(" ",""),16)*v;
+        return dd;
+    }
+
+    public static double crossWalks(char a){
+        switch (a){
+            case '0':
+                return 0.0001;
+            case '1':
+                return 0.0002;
+            case '2':
+                return 0.0005;
+            case '3':
+                return 0.001;
+            case '4':
+                return 0.002;
+            case '5':
+                return 0.005;
+            case '6':
+                return 0.01;
+            case '7':
+                return 0.02;
+            case '8':
+                return 0.05;
+            case '9':
+                return 0.1;
+            case 'A':
+                return 0.2;
+            case 'B':
+                return 0.5;
+            case 'C':
+                return 1;
+            case 'D':
+                return 2;
+            case 'E':
+                return 5;
+        }
+        return 0;
+    }
+    @Test
+    void test316(){
+        int[] ints ={1,2,3,4,4};
+        HashMap<Object, Object> hashMap = new HashMap<>();
+        for (int i = 0; i < 5; i++) {
+            hashMap.put("layerId",i+1);//加1为货道层数
+            hashMap.put("weight",ints[i]);//货道重量
+        }
+        
     }
 }

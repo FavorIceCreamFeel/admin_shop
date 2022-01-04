@@ -1,8 +1,7 @@
 package com.smxr.dao;
 
 import com.smxr.pojo.User;
-import org.apache.ibatis.annotations.MapKey;
-import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.Map;
 @Mapper
 @Component
 public interface UserMapper {
-    //    @Select("select *from user;")
+//    @Select("select *from user;")
     List<User> selectUserAll();
     User selectUserById(String phoneNumber);
     @MapKey("phoneNumber")
@@ -34,4 +33,9 @@ public interface UserMapper {
 //    --------------------------------------------
     User queryUserByPhoneNum(String s);
     ArrayList queryPowerStringByPhoneNum(int i);
+
+    @Insert("insert into user(userName,userPwd,phoneNumber) values(#{userName},#{userPwd},#{phoneNumber})")
+    @SelectKey(statement = "select replace(uuid(),'-','')",keyProperty = "phoneNumber",
+            resultType = String.class ,before = true)
+    public int insertAccountTest(User user);
 }

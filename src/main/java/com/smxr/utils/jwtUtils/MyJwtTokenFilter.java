@@ -28,7 +28,7 @@ import java.util.List;
  * 所有请求最先进入此过滤器，包括登录接口，而且在springsecurity的密码验证之前执行
  */
 @Component
-public class MyJwtTokenFilter extends OncePerRequestFilter {
+public class MyJwtTokenFilter extends OncePerRequestFilter {//BasicAuthenticationFilter
     @Autowired
     private UserService userService;
     @Override
@@ -51,7 +51,9 @@ public class MyJwtTokenFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(UserDetails, null, UserDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                 logger.info(String.format("Authenticated userDetail %s, setting security context", username));
+                // 设置登录认证信息到上下文
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+//                SecurityContextHolder.getContext().getAuthentication()获取到保存的用户信息；
             }
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);

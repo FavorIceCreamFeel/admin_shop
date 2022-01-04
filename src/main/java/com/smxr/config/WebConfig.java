@@ -2,15 +2,19 @@ package com.smxr.config;
 
         import org.springframework.context.annotation.Configuration;
         import org.springframework.web.servlet.config.annotation.CorsRegistry;
+        import org.springframework.web.servlet.config.annotation.EnableWebMvc;
         import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
         import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+        import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @author smxr
  * @date 2020/10/19
  * @time 14:31
  */
+
 @Configuration
+@EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
     /**
      * 处理跨域问题解决方法
@@ -42,9 +46,9 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         //图片存放路径和映射地址
 //        windows dir下
-        registry.addResourceHandler("/upload").addResourceLocations("file:E:/upload/");
+//        registry.addResourceHandler("/upload").addResourceLocations("file:E:/upload/");
 //        linux  file下
-//        registry.addResourceHandler("/upload").addResourceLocations("file:/usr/local/upload/");
+        registry.addResourceHandler("/upload").addResourceLocations("file:/usr/local/upload/");
         //静态文件存放映射地址
 //        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
 //        registry.addResourceHandler("/**").addResourceLocations("classpath:/META-INF/resources/");

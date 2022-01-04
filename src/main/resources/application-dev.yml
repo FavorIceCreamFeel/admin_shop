@@ -1,22 +1,42 @@
 spring:
   datasource:
     username: root
-    password: liu150938
-    url: jdbc:mysql://localhost:3306/webapp?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true
+    password: Liu.150938
+    url: jdbc:mysql://39.103.178.68:2306/webapp?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
     driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      auto-commit: true
-      connection-timeout: 3000
-      max-lifetime: 1800000
-      idle-timeout: 900000
-      minimum-idle: 20
-      maximum-pool-size: 200
+#    hikari:
+#      auto-commit: true
+#      connection-timeout: 3000
+#      max-lifetime: 1800000
+#      idle-timeout: 900000
+#      minimum-idle: 20
+#      maximum-pool-size: 200
   redis:
-    host: 49.232.9.92
+    host: 39.103.178.68
     port: 6379
-    password: smxr
+    password: liu.150938
     timeout: 10000
+  rabbitmq:
+    username: smxr
+    password: liu150938
+    port: 5672
+    host: 39.103.178.68
+    virtual-host: /
+    listener: #这里是客户端需要配置的
+      simple:
+        acknowledge-mode: manual  # 收到确认; none自动;manual手动确认; auto异常
+        retry:
+          enabled: true  #开启重试机制
+          max-attempts: 3  #最大重试次数
+          initial-interval: 1000ms  #重试间隔时间
+    publisher-confirm-type: correlated #开启生产者的消息确认机制
+    #publisher-returns: true # 回退模式 二者只能选一个
+
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#swagger2 开启和关闭
+swagger:
+  enable: true

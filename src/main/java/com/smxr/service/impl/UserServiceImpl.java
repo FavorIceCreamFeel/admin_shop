@@ -18,14 +18,15 @@ import java.util.List;
  * @date 2020/10/26
  * @time 16:09
  */
-@Service
-public class UserServeiceImpl implements  UserService {
+@Service("userService")
+public class UserServiceImpl implements  UserService {
     @Autowired
     UserMapper userDao;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Override
     public boolean insertUser(User user) {
+
         return false;
     }
 
@@ -36,7 +37,9 @@ public class UserServeiceImpl implements  UserService {
 
     @Override
     public boolean selectUserByPhoneNumber(String phoneNumber) {
-        return false;
+        System.out.println("UserServiceImpl:"+phoneNumber);
+
+        return true;
     }
 
     @Override
@@ -57,6 +60,16 @@ public class UserServeiceImpl implements  UserService {
     @Override
     public boolean updateUserPwd(String phoneNumber, String passwordOne, String passwordTwo) {
         return false;
+    }
+
+    @Override
+    public void getUser() {
+        System.out.println("UserService: "+this.getClass().getName());
+    }
+
+    @Override
+    public List<User> getUserList() {
+        return userDao.selectUserAll();
     }
 
     @Override
